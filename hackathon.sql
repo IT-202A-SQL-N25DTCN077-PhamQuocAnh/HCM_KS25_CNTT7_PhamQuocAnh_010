@@ -132,7 +132,7 @@ WHERE
     cl.status = 'Approved'
 GROUP BY c.customer_id, c.full_name
 HAVING total_amount > 50000000;
-
+-- -------------------------------------------------------------------------------------
 SELECT p.package_id, ip.package_name, COUNT(p.package_id) AS total_package FROM policies p 
 JOIN insurance_packages ip ON p.package_id = ip.package_id
 GROUP BY  p.package_id, ip.package_name
@@ -159,7 +159,7 @@ BEGIN
 END $$
 
 DELIMITER ;
-
+-- -------------------------------------------------------------------------------
 UPDATE claims
 SET claim_amount  = 54646 
 WHERE claim_id = 'CLM901';
