@@ -133,11 +133,11 @@ WHERE
 GROUP BY c.customer_id, c.full_name
 HAVING total_amount > 50000000;
 
--- SELECT package_id, MAX(count_package) FROM 
--- (SELECT package_id,COUNT(package_id) as count_package FROM policies GROUP BY package_id) AS temp;
-
--- SELECT package_id FROM (SELECT package_id,COUNT(package_id) as count_package FROM policies GROUP BY package_id) AS temp
---  WHERE package_id = (SELECT MAX((SELECT package_id,COUNT(package_id) as count_package FROM policies GROUP BY package_id));
+SELECT p.package_id, ip.package_name, COUNT(p.package_id) AS total_package FROM policies p 
+JOIN insurance_packages ip ON p.package_id = ip.package_id
+GROUP BY  p.package_id, ip.package_name
+ORDER BY total_package DESC
+LIMIT 1;
 
 -- -----------------------------------------------------------------
 CREATE INDEX idx_policy_status_date ON policies(status, start_date);
