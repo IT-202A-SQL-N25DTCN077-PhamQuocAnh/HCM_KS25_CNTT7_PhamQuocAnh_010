@@ -178,5 +178,29 @@ DELIMITER ;
 DELETE FROM policies
 WHERE policy_id = 'POL102';
 
+DELIMITER $$
+CREATE PROCEDURE sp_check_claim_limit(
+	IN p_claim_id VARCHAR (10),
+    OUT p_message VARCHAR(50)
+)
+BEGIN
+  DECLARE p_claim_amout DECIMAL(18,2);
+  DECLARE p_max_limit DECIMAL(18,2);
+  
+	SELECT c.claim_amout, ip.max_limit INTO p_claim_amout, p_max_limit FROM claims c
+	JOIN policies p ON p.policy_id = c.policy_id
+	JOIN insurance_packages ip ON ip.package_id = p.package_id
+    WHERE ip.package_id = p_claim_amout;
+  
+	IF p_claim_amout > p_max_limit THEN 
+		SET p_message = 'Exceeded';
+	ELSE 
+		SET p_message = 'Valid';
+	END IF;
+END $$
 
+DELIMITER ;
 
+SELECT * FROM claims c
+JOIN policies p ON p.policy_id = c.policy_id
+JOIN insurance_packages ip ON ip.package_id = p.package_id
